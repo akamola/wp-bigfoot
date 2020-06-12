@@ -11,3 +11,9 @@ Create simple, elegant footnotes on your site. Use the [footnote] shortcode and 
 Create simple, elegant footnotes on your site. Use the `[footnote]` shortcode and the plugin takes care of the rest.
 
 Example usage: `Lorem ipsum. [footnote]My note.[/footnote]`
+
+== Changelog ==
+
+= 2.0 =
+* Update to latest bigfoot.js 2.1.4
+* Allow configuration of default, number, bottom options. 
