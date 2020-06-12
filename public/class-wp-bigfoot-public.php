@@ -52,7 +52,8 @@ class Wp_Bigfoot_Public {
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 		add_shortcode('footnote', array($this,'shortcode_footnote') );
-        add_filter( 'the_content', array($this, 'the_content' ), 12 );
+		add_filter( 'the_content', array($this, 'the_content' ), 12 );
+		add_action('wp_footer', array($this, 'override_footnotestyle')); 
 
 	}
 
@@ -107,6 +108,7 @@ class Wp_Bigfoot_Public {
 		wp_enqueue_script(  $this->plugin_name.'-wp-bigfoot', plugin_dir_url( __FILE__ ) . 'js/wp-bigfoot.js', array( 'jquery' ), $this->version, false );
 
 	}
+	
 
 		function shortcode_footnote( $atts, $content=NULL ){
 			global $id;
@@ -154,5 +156,27 @@ class Wp_Bigfoot_Public {
 	
 	
 	}
+
+	/**
+	 * Override player styles
+	 * @todo what is this used for
+	 */
+	public function override_footnotestyle() {
+		$options = get_option( 'wpbf-options');
+		$bg = $options['wpbf-bgcolor'];
+		$fg = $options['wpbf-fgcolor'];
+
+		if ( isset( $bg ) || isset( $fg) )
+		?>
+		<style type="text/css">
+			.bigfoot-footnote__button  {
+				background-color: <?php echo $bg; ?> !important;
+			}
+			.bigfoot-footnote__button:after {
+				color: <?php echo $fg; ?> !important;
+			}
+		</style>
+		<?php
+	}	
 
 }
