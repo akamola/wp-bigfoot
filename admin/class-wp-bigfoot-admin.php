@@ -66,7 +66,8 @@ class Wp_Bigfoot_Admin {
 
 
 	public function enqueue_scripts() {
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/-wp-bigfoot-admin.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_style( 'wp-color-picker' );
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/wp-bigfoot-admin.js', array( 'jquery', 'wp-color-picker' ), $this->version, false );
 
 	}
 
@@ -74,17 +75,23 @@ class Wp_Bigfoot_Admin {
 
 	// Register our settings. Add the settings section, and settings fields
 	public function wpbf_settings_init(){
-		register_setting('wpbf-options', 'wpbf-options', 'wpbf-options_validate' );
+		register_setting('wpbf-options', 'wpbf-options', 'validate_options' );
 		add_settings_section('main_section', 'Main Settings', 'section_text_fn', __FILE__);
-		add_settings_field('radio_buttons', 'Select Shape', 'setting_radio_fn', __FILE__, 'main_section');
+		add_settings_field('radio_buttons', 'Select Style', 'setting_radio_fn', __FILE__, 'main_section');
 
-			// ************************************************************************************************************
+		add_settings_section('color_section', 'Color Settings', 'color_selection_text', __FILE__);
+		$options = get_option('wpbf-options');
+		if ( $options['wpbf-style'] == "Number") {
+		add_settings_field('cpa_footnote_fg', 'Select Foreground Color','fg_settings_field', __FILE__, 'color_section' );
+		}
+		add_settings_field('cpa_footnote_bg', 'Select Background Color','bg_settings_field', __FILE__, 'color_section' );
+	// ************************************************************************************************************
 
 	// Callback functions
 
 	// Section HTML, displayed before the first option
 	function section_text_fn() {
-		echo '<p>Below are some examples of different option controls.</p>';
+		echo '<p>Update the Bigfoot.js style, and color options</p>';
 	}
 
 	// RADIO-BUTTON - Name: plugin_options[wpbf-style]
@@ -96,6 +103,68 @@ class Wp_Bigfoot_Admin {
 			echo "<label><input ".$checked." value='$item' name='wpbf-options[wpbf-style]' type='radio' /> $item</label><br />";
 		}
 	}
+ 
+		// Section HTML, displayed before the first option
+		function color_selection_text() {
+			echo '<p>Choose a color for the footnote background and foreground (if Number option is selected above)</p>';
+		}
+	function bg_settings_field() { 
+		$options = get_option('wpbf-options');
+		$val = ( isset( $options['wpbf-bgcolor'] ) ) ? $options['wpbf-bgcolor'] : '';
+		echo '<input type="text" name="wpbf-options[wpbf-bgcolor]" value="' . $val . '" class="cpa-color-picker" >';
+		
+	}
+
+	function fg_settings_field() {
+		$options = get_option('wpbf-options');
+		$val = ( isset( $options['wpbf-fgcolor'] ) ) ? $options['wpbf-fgcolor'] : '';
+		echo '<input type="text" name="wpbf-options[wpbf-fgcolor]" value="' . $val . '" class="cpa-color-picker" >';
+	}
+
+	function validate_options( $fields ) { 
+     
+		$valid_fields = array();
+		 
+		// Validate Foreground Field
+		$title = trim( $fields['wpbf-fgcolor'] );
+		$valid_fields['wpbf-fgcolor'] = strip_tags( stripslashes( $title ) );
+		 
+		// Validate Background Color
+		$background = trim( $fields['wpbf-bgcolor'] );
+		$background = strip_tags( stripslashes( $background ) );
+		 
+		// Check if is a valid hex color
+		if( FALSE === $this->check_color( $background ) ) {
+		 
+			// Set the error message
+			add_settings_error( 'wpbf-options', 'cpa_bg_error', 'Insert a valid color for Background', 'error' ); // $setting, $code, $message, $type
+			 
+			// Get the previous valid value
+			$valid_fields['wpbf-bgcolor'] = $this->options['wpbf-bgcolor'];
+		 
+		} else {
+		 
+			$valid_fields['wpbf-bgcolor'] = $background;  
+		 
+		}
+		 
+		return apply_filters( 'validate_options', $valid_fields, $fields);
+	}
+	 
+	/**
+	 * Function that will check if value is a valid HEX color.
+	 */
+	function check_color( $value ) { 
+		 
+		if ( preg_match( '/^#[a-f0-9]{6}$/i', $value ) ) { // if user insert a HEX color with #     
+			return true;
+		}
+		 
+		return false;
+
+	}
+
+
 	}
 
 	public function add_admin_pages(){

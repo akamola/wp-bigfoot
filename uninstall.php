@@ -29,3 +29,11 @@
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 	exit;
 }
+
+ 
+$option_name = 'wpbf_options';
+ 
+delete_option($option_name);
+ 
+// for site options in Multisite
+delete_site_option($option_name);

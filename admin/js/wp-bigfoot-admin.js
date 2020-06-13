@@ -1,5 +1,11 @@
 (function( $ ) {
 	'use strict';
+    $(function() {
+         
+        // Add Color Picker to all inputs that have 'color-field' class
+        $( '.cpa-color-picker' ).wpColorPicker();
+         
+    });
 
 	/**
 	 * All of the code for your admin-facing JavaScript source
