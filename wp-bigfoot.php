@@ -14,11 +14,11 @@
  *
  * @wordpress-plugin
  * Plugin Name:       WP-Bigfoot
- * Plugin URI:        https://github.com/freekrai/wp-bigfoot
+ * Plugin URI:        https://github.com/ze-martino/wp-bigfoot
  * Description: Easier footnotes for your site, and jQuery Bigfoot for cooler effects
- * Author: 			  Roger Stringer
- * Author URI:        http://rogerstringer.com
- * Contributors:      martinezadam
+ * Author: 			  Adam Martinez
+ * Author URI:        https://zemartino.com
+ * Contributors:      freekrai
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       wp-bigfoot

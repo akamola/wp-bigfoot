@@ -19,7 +19,7 @@
  *
  * @package    Wp_Bigfoot
  * @subpackage Wp_Bigfoot/includes
- * @author     Adam Martinez <am@martinezadam.com>
+ * @author     Adam Martinez <am@zemartino.com>
  */
 class Wp_Bigfoot_Loader {
 
