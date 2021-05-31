@@ -14,7 +14,7 @@ Example usage: `Lorem ipsum. [footnote]My note.[/footnote]`
 
 == Changelog ==
 
-= 2.2 = 
+= 2.1.1 = 
 * Test up to 5.7.2
 
 = 2.1 =
