@@ -53,7 +53,7 @@ class Wp_Bigfoot_Public {
 		$this->version = $version;
 		add_shortcode('footnote', array($this,'shortcode_footnote') );
 		add_filter( 'the_content', array($this, 'the_content' ), 12 );
-		add_action('wp_footer', array($this, 'override_footnotestyle')); 
+		add_action('wp_head', array($this, 'override_footnotestyle'));
 
 	}
 
@@ -163,20 +163,24 @@ class Wp_Bigfoot_Public {
 	 */
 	public function override_footnotestyle() {
 		$options = get_option( 'wpbf-options');
-		$bg = $options['wpbf-bgcolor'];
-		$fg = $options['wpbf-fgcolor'];
 
-		if ( isset( $bg ) || isset( $fg) )
+		if ( array_key_exists( 'wpbf-bgcolor', $options ) || array_key_exists( 'wpbf-fgcolor', $options ) ):
 		?>
 		<style type="text/css">
+			<?php if ( array_key_exists( 'wpbf-bgcolor', $options ) && !empty( $options['wpbf-bgcolor'] ) ): ?>
 			.bigfoot-footnote__button  {
-				background-color: <?php echo $bg; ?> !important;
+				background-color: <?php echo $options['wpbf-bgcolor']; ?> !important;
 			}
+			<?php endif; ?>
+
+			<?php if ( array_key_exists( 'wpbf-fgcolor', $options ) && !empty( $options['wpbf-fgcolor'] ) ): ?>
 			.bigfoot-footnote__button:after {
-				color: <?php echo $fg; ?> !important;
+				color: <?php echo $options['wpbf-fgcolor']; ?> !important;
 			}
+			<?php endif; ?>
 		</style>
 		<?php
+		endif;
 	}	
 
 }
